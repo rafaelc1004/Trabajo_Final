@@ -164,62 +164,11 @@ public class TestMantencion {
                 } while (estado == false);
             }
 
-            System.out.println("\n\t\tDatos de Vehiculo");
-            do {
-                System.out.print("\nIngrese Patente de Vehiculo :");
-                patente = bf.readLine();
-                estado = Validaciones.validarPatente(patente);
-            } while (estado == true);
-            
-            //se verifica si el vehiculo a agregar ya existe en la lista de vehiculos del cliente
-            if (estado1 == true) {
+            //en caso de no existir el cliente
+            Clientes cliente = new Clientes(rutCliente, nombreCliente, apellidoCliente, email, fono);
 
-                if (!listaCliente.get(i).getListaAutos().isEmpty()) {//se comprueba si la lista de clientes no esta vacia
-                    for (j = 0; j < listaCliente.get(i).getListaAutos().size(); j++) {
-                        if (listaCliente.get(i).getListaAutos().get(j).getPatente().equalsIgnoreCase(patente)) {//se comprueba que la patente ingresada no exista en lista de vehiculos del cliente
-                            System.out.println("Vehiculo ya esta ingresado en Cliente");
-                            TimeUnit.SECONDS.sleep(1);
-                            menuInicial();
-                        }
-                    }
+            listaCliente.add(cliente);
 
-                }
-            }
-
-            //validacion de atributos
-            do {
-                System.out.print("Ingrese Marca de Vehiculo :");
-                marca = bf.readLine();
-                estado = Validaciones.validarCadena(marca);
-            } while (estado == true);
-            do {
-                System.out.print("Ingrese Modelo de Vehiculo :");
-                modelo = bf.readLine();
-                estado = Validaciones.validarCadena(modelo);
-            } while (estado == true);
-            do {
-                System.out.print("Ingrese anio de Fabricacion de Vehiculo :");
-                estado = validarNumero();
-                if (estado) {
-
-                    estado = Validaciones.validarAnio(valor);
-                } else {
-                    System.out.println("Anio de Fabricacion de vehiculo ingresado no Corresponde");
-                }
-
-            } while (estado == false);
-            Autos auto = new Autos(patente, marca, modelo, valor);
-            if (estado1) {
-                //si el cliente ya existe solo se agrega el vehiculo a su lista de vehiculos
-                listaCliente.get(i).agregarAuto(auto);
-            } else {
-                //en caso de no existir el cliente, se crea y agrega un vehiculo y a la lista de clientes
-                Clientes cliente = new Clientes(rutCliente, nombreCliente, apellidoCliente, email, fono);
-                cliente.agregarAuto(auto);
-                listaCliente.add(cliente);
-            }
-
-            
             System.out.println("Cliente Agregado Correctamente");
             TimeUnit.SECONDS.sleep(1);
             do {
@@ -233,11 +182,182 @@ public class TestMantencion {
 
     }
 
-    private static void eliminarCliente() {
+    private static void agregarVehiculoCliente() throws Exception {
+        do {
+            System.out.print("Ingrese rut de Cliente para agregar Vehiculo");
+            rutCliente = bf.readLine();
+            estado = Validaciones.validarCadena(patente);
+        } while (estado == true);
+
+        if (!listaCliente.isEmpty()) {//se comprueba si la lista de clientes no esta vacia
+            for (i = 0; i < listaCliente.size(); i++) {
+                if (listaCliente.get(i).getRut().equalsIgnoreCase(rutCliente)) {//se comprueba el rut ingresado con los clientes de la lista clientes
+                    estado1 = true;
+                    break;
+                } else {
+                    estado1 = false;
+                }
+            }
+        } else {
+            estado1 = false;
+        }
+
+        if (estado1 == false) {
+            System.out.println("Agregue Cliente");
+            agregarCliente();
+        }
+
+        System.out.println("\n\t\tDatos de Vehiculo");
+        do {
+            System.out.print("\nIngrese Patente de Vehiculo :");
+            patente = bf.readLine();
+            estado = Validaciones.validarPatente(patente);
+        } while (estado == true);
+
+        //se verifica si el vehiculo a agregar ya existe en la lista de vehiculos del cliente
+        if (estado1 == true) {
+
+            if (!listaCliente.get(i).getListaAutos().isEmpty()) {//se comprueba si la lista de clientes no esta vacia
+                for (j = 0; j < listaCliente.get(i).getListaAutos().size(); j++) {
+                    if (listaCliente.get(i).getListaAutos().get(j).getPatente().equalsIgnoreCase(patente)) {//se comprueba que la patente ingresada no exista en lista de vehiculos del cliente
+                        System.out.println("Vehiculo ya esta ingresado en Cliente");
+                        TimeUnit.SECONDS.sleep(1);
+                        menuInicial();
+                    }
+                }
+
+            }
+        }
+
+        //validacion de atributos
+        do {
+            System.out.print("Ingrese Marca de Vehiculo :");
+            marca = bf.readLine();
+            estado = Validaciones.validarCadena(marca);
+        } while (estado == true);
+        do {
+            System.out.print("Ingrese Modelo de Vehiculo :");
+            modelo = bf.readLine();
+            estado = Validaciones.validarCadena(modelo);
+        } while (estado == true);
+        do {
+            System.out.print("Ingrese anio de Fabricacion de Vehiculo :");
+            estado = validarNumero();
+            if (estado) {
+
+                estado = Validaciones.validarAnio(valor);
+            } else {
+                System.out.println("Anio de Fabricacion de vehiculo ingresado no Corresponde");
+            }
+
+        } while (estado == false);
+        Autos auto = new Autos(patente, marca, modelo, valor);
+        if (estado1) {
+            //si el cliente ya existe solo se agrega el vehiculo a su lista de vehiculos
+            listaCliente.get(i).agregarAuto(auto);
+        }
+        menuInicial();
+    }
+
+    private static void eliminarCliente() throws Exception {
+        do {
+
+            do {
+                System.out.println("Ingrese rut de cliente :");
+                rutCliente = bf.readLine();
+                estado = Validaciones.validarCadena(rutCliente);
+
+            } while (estado == true);
+            if (!listaCliente.isEmpty()) {//se comprueba si la lista de clientes no esta vacia
+                for (i = 0; i < listaCliente.size(); i++) {
+                    if (rutCliente.equalsIgnoreCase(listaCliente.get(i).getRut())) {
+                        listaCliente.remove(i);
+                        System.out.println("Cliente eliminado Correctamente");
+                        estado = true;
+                        break;
+                    } else {
+                        estado = false;
+                    }
+                }
+            } else {
+                estado = false;
+            }
+            if (estado == false) {
+                System.out.println("Cliente no se ha Encontrado");
+            }
+            do {
+                System.out.print("Desea eliminar otro Cliente si/no :");
+                respuesta = bf.readLine();
+                estado = Validaciones.validarRespuesta(respuesta);
+            } while (estado == false);
+        } while (respuesta.equalsIgnoreCase(
+                "si"));
+
+        menuInicial();
 
     }
 
-    private static void nuevaMantencion() {
+    private static void nuevaMantencion() throws Exception {
+        
+        String tipoMantencion;
+        int precio;
+        String observacion;
+    
+        do {
+            System.out.print("Ingrese rut Cliente :");
+            rutCliente = bf.readLine();
+            estado = Validaciones.validarCadena(rutCliente);
+        } while (estado == true);
+        if (!listaCliente.isEmpty()) {//se comprueba si la lista de clientes no esta vacia
+            for (i = 0; i < listaCliente.size(); i++) {
+                if (rutCliente.equalsIgnoreCase(listaCliente.get(i).getRut())) {
+                    if (!listaCliente.get(i).getListaAutos().isEmpty()) {//se comprueba si la lista de clientes no esta vacia
+                        for (j = 0; j < listaCliente.get(i).getListaAutos().size(); j++) {
+                            System.out.printf((j + 1) + ".- %s%n", listaCliente.get(i).getListaAutos().get(j).getPatente());
+                            break;
+                        }
+                        do {
+                            System.out.println("Ingrese numero de patente a realizar mantencion :");
+                            estado = validarNumero();
+                            if(valor > listaCliente.get(i).getListaAutos().size() || valor < 1){
+                                System.out.println("Valor ingresado no es valido");
+                                estado = false;
+                            }
+                        } while (estado == false );
+                        
+                        do{
+                            System.out.print("Ingrese tipo de mantencion a realizar :");
+                            tipoMantencion = bf.readLine();
+                            estado = Validaciones.validarCadena(tipoMantencion);
+                        }while(estado == true);
+                        do{
+                            System.out.print("Ingrese precio de mantencion :");
+                            estado = validarNumero();
+                            if(valor < 1 ){
+                                System.out.println("Valor ingresado no es valido");
+                                estado = false;
+                            }
+                        }while(estado == false);
+                        
+                        
+                        
+                        do{
+                            System.out.print("Ingrese observacion de Mantencion :");
+                            observacion = bf.readLine();
+                            estado = Validaciones.validarCadena(observacion);
+                        }while(estado == true);
+
+                    } else {
+                        agregarVehiculoCliente();
+                    }
+                } else {
+                    agregarCliente();
+                }
+            }
+
+        } else {
+            agregarCliente();
+        }
 
     }
 
