@@ -7,10 +7,13 @@ package Ejecutables;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import modelos.Autos;
 import modelos.Clientes;
+import modelos.Fechas;
 import modelos.MantencionElectricas;
 import modelos.MantencionMecanicas;
 import modelos.Mantenciones;
@@ -111,7 +114,7 @@ public class TestMantencion {
             case 5 ->
                 mantencionesRealizadasVehiculo();
             case 6 ->
-                informeRecaudacion();
+                informeRecaudacionDia();
             default ->
                 System.exit(0);
 
@@ -384,12 +387,16 @@ public class TestMantencion {
                                 observacion = bf.readLine();
                                 estado = Validaciones.validarCadena(observacion);
                             } while (estado == true);
+                            int dia = LocalDate.now().getDayOfMonth();
+                            int mes = LocalDate.now().getMonthValue();
+                            int year = LocalDate.now().getYear();
+                            Fechas fecha = new Fechas(year, mes, dia);
 
                             if (opcion == 1) {
-                                Mantenciones mantencion = new MantencionElectricas(tipoMantencion, valor, observacion);
+                                Mantenciones mantencion = new MantencionElectricas(tipoMantencion, valor, observacion, fecha);
                                 listaCliente.get(i).getListaAutos().get(opcionPatente).agregarMantencion(mantencion);
                             } else {
-                                Mantenciones mantencion = new MantencionMecanicas(tipoMantencion, valor, observacion);
+                                Mantenciones mantencion = new MantencionMecanicas(tipoMantencion, valor, observacion, fecha);
                                 listaCliente.get(i).getListaAutos().get(opcionPatente).agregarMantencion(mantencion);
                             }
                             System.out.println("Mantencion agregada correctamente");
@@ -477,7 +484,7 @@ public class TestMantencion {
         menuInicial();
     }
 
-    private static void informeRecaudacion() {
+    private static void informeRecaudacionDia() {
 
     }
 

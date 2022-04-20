@@ -3,11 +3,12 @@ package modelos;
 
 public class MantencionMecanicas extends Mantenciones{
 
-    public MantencionMecanicas(String tipoMantencion, int montoServicio, String observacion) {
+    public MantencionMecanicas(String tipoMantencion, int montoServicio, String observacion, Fechas fecha) {
      
         this.tipoMantencion = tipoMantencion;
         this.montoServicio = montoServicio;
         this.observacion = observacion;
+        this.fecha = fecha;
     }
     
     public MantencionMecanicas(){
@@ -42,6 +43,15 @@ public class MantencionMecanicas extends Mantenciones{
     public void setObservacion(String observacion) {
         this.observacion = observacion;
     }
+
+    public Fechas getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Fechas fecha) {
+        this.fecha = fecha;
+    }
+    
     
     
 }

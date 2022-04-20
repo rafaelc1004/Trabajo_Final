@@ -8,7 +8,7 @@ public abstract class Mantenciones {
     protected String tipoMantencion;
     protected int montoServicio;
     protected String observacion;
-
+    protected Fechas fecha = new Fechas();
     
     
     public abstract void crearMantencion();
