@@ -28,7 +28,7 @@ public class Validaciones {
     }
 
     public static boolean validaOpcion(int opcion) {
-        if (opcion < 1 || opcion > 6) {
+        if (opcion < 1 || opcion > 7) {
             estado = false;
             System.out.println("Opcion ingresada no es valida");
         } else {
@@ -60,7 +60,7 @@ public class Validaciones {
     }
     
     public static boolean validarCadena(String cadena){
-        if(cadena.isBlank()){
+        if(null == cadena || cadena.isBlank()){
             System.out.println("El valor ingresado no es valido");
             estado = true;
         }else{

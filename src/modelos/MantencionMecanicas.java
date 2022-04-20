@@ -4,7 +4,7 @@ package modelos;
 public class MantencionMecanicas extends Mantenciones{
 
     public MantencionMecanicas(String tipoMantencion, int montoServicio, String observacion) {
-        super();
+     
         this.tipoMantencion = tipoMantencion;
         this.montoServicio = montoServicio;
         this.observacion = observacion;

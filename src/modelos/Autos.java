@@ -19,6 +19,16 @@ public class Autos {
         this.anioFabricacion = anioFabricacion;
         listaMantencion = new ArrayList<>();
     }
+
+    public ArrayList<Mantenciones> getListaMantencion() {
+        return listaMantencion;
+    }
+
+    public void setListaMantencion(ArrayList<Mantenciones> listaMantencion) {
+        this.listaMantencion = listaMantencion;
+    }
+    
+    
     
     public void agregarMantencion(Mantenciones mantencion ){
         this.listaMantencion.add(mantencion);

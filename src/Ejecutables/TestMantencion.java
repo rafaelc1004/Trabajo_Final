@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import modelos.Autos;
 import modelos.Clientes;
+import modelos.MantencionElectricas;
+import modelos.MantencionMecanicas;
+import modelos.Mantenciones;
 
 public class TestMantencion {
 
@@ -21,6 +24,7 @@ public class TestMantencion {
     private static boolean estado1;
     private static String respuesta;
     private static int i, j;
+    private static int opcionPatente;
 
     private static ArrayList<Clientes> listaCliente = new ArrayList<>();
 
@@ -46,11 +50,12 @@ public class TestMantencion {
     private static void menuInicial() throws Exception {
         System.out.println("\t\tMenu Mantenciones MyCard\n");
         System.out.println("1.- Agregar Cliente");
-        System.out.println("2.- Eliminar Cliente");
-        System.out.println("3.- Nueva mantencion");
-        System.out.println("4.- Mantenciones realizada a Vehiculo");
-        System.out.println("5.- Informe de Recaudacion del dia");
-        System.out.println("6.- Salir");
+        System.out.println("2.' Agregar auto a Cliente");
+        System.out.println("3.- Eliminar Cliente");
+        System.out.println("4.- Nueva mantencion");
+        System.out.println("5.- Mantenciones realizada a Vehiculo");
+        System.out.println("6.- Informe de Recaudacion del dia");
+        System.out.println("7.- Salir");
 
         do {
             System.out.print("Ingrese numero de Opcion a Realizar :");
@@ -97,12 +102,15 @@ public class TestMantencion {
             case 1 ->
                 agregarCliente();
             case 2 ->
-                eliminarCliente();
+                agregarVehiculoCliente();
+
             case 3 ->
-                nuevaMantencion();
+                eliminarCliente();
             case 4 ->
-                mantencionesRealizadasVehiculo();
+                nuevaMantencion();
             case 5 ->
+                mantencionesRealizadasVehiculo();
+            case 6 ->
                 informeRecaudacion();
             default ->
                 System.exit(0);
@@ -184,78 +192,90 @@ public class TestMantencion {
 
     private static void agregarVehiculoCliente() throws Exception {
         do {
-            System.out.print("Ingrese rut de Cliente para agregar Vehiculo");
-            rutCliente = bf.readLine();
-            estado = Validaciones.validarCadena(patente);
-        } while (estado == true);
 
-        if (!listaCliente.isEmpty()) {//se comprueba si la lista de clientes no esta vacia
-            for (i = 0; i < listaCliente.size(); i++) {
-                if (listaCliente.get(i).getRut().equalsIgnoreCase(rutCliente)) {//se comprueba el rut ingresado con los clientes de la lista clientes
-                    estado1 = true;
-                    break;
-                } else {
-                    estado1 = false;
+            do {
+                System.out.print("Ingrese rut de Cliente para agregar Vehiculo :");
+                rutCliente = bf.readLine();
+                estado = Validaciones.validarCadena(rutCliente);
+            } while (estado == true);
+
+            if (!listaCliente.isEmpty()) {//se comprueba si la lista de clientes no esta vacia
+                for (i = 0; i < listaCliente.size(); i++) {
+                    if (listaCliente.get(i).getRut().equalsIgnoreCase(rutCliente)) {//se comprueba el rut ingresado con los clientes de la lista clientes
+                        estado1 = true;
+                        break;
+                    } else {
+                        estado1 = false;
+                    }
                 }
+            } else {
+                estado1 = false;
             }
-        } else {
-            estado1 = false;
-        }
 
-        if (estado1 == false) {
-            System.out.println("Agregue Cliente");
-            agregarCliente();
-        }
+            if (estado1 == false) {
+                System.out.println("Cliente No existe");
+                TimeUnit.SECONDS.sleep(1);
+            } else {
 
-        System.out.println("\n\t\tDatos de Vehiculo");
-        do {
-            System.out.print("\nIngrese Patente de Vehiculo :");
-            patente = bf.readLine();
-            estado = Validaciones.validarPatente(patente);
-        } while (estado == true);
+                System.out.println("\n\t\tDatos de Vehiculo");
+                do {
+                    System.out.print("\nIngrese Patente de Vehiculo :");
+                    patente = bf.readLine();
+                    estado = Validaciones.validarPatente(patente);
+                } while (estado == true);
 
-        //se verifica si el vehiculo a agregar ya existe en la lista de vehiculos del cliente
-        if (estado1 == true) {
+                //se verifica si el vehiculo a agregar ya existe en la lista de vehiculos del cliente
+                if (estado1 == true) {
 
-            if (!listaCliente.get(i).getListaAutos().isEmpty()) {//se comprueba si la lista de clientes no esta vacia
-                for (j = 0; j < listaCliente.get(i).getListaAutos().size(); j++) {
-                    if (listaCliente.get(i).getListaAutos().get(j).getPatente().equalsIgnoreCase(patente)) {//se comprueba que la patente ingresada no exista en lista de vehiculos del cliente
-                        System.out.println("Vehiculo ya esta ingresado en Cliente");
-                        TimeUnit.SECONDS.sleep(1);
-                        menuInicial();
+                    if (!listaCliente.get(i).getListaAutos().isEmpty()) {//se comprueba si la lista de clientes no esta vacia
+                        for (j = 0; j < listaCliente.get(i).getListaAutos().size(); j++) {
+                            if (listaCliente.get(i).getListaAutos().get(j).getPatente().equalsIgnoreCase(patente)) {//se comprueba que la patente ingresada no exista en lista de vehiculos del cliente
+                                System.out.println("Vehiculo ya esta ingresado en Cliente");
+                                TimeUnit.SECONDS.sleep(1);
+                                menuInicial();
+                            }
+                        }
+
                     }
                 }
 
+                //validacion de atributos
+                do {
+                    System.out.print("Ingrese Marca de Vehiculo :");
+                    marca = bf.readLine();
+                    estado = Validaciones.validarCadena(marca);
+                } while (estado == true);
+                do {
+                    System.out.print("Ingrese Modelo de Vehiculo :");
+                    modelo = bf.readLine();
+                    estado = Validaciones.validarCadena(modelo);
+                } while (estado == true);
+                do {
+                    System.out.print("Ingrese anio de Fabricacion de Vehiculo :");
+                    estado = validarNumero();
+                    if (estado) {
+
+                        estado = Validaciones.validarAnio(valor);
+                    } else {
+                        System.out.println("Anio de Fabricacion de vehiculo ingresado no Corresponde");
+                    }
+
+                } while (estado == false);
+                Autos auto = new Autos(patente, marca, modelo, valor);
+                if (estado1) {
+                    //si el cliente ya existe solo se agrega el vehiculo a su lista de vehiculos
+                    listaCliente.get(i).agregarAuto(auto);
+                }
+                System.out.println("Auto Agregado a Cliente Correctamente");
+                TimeUnit.SECONDS.sleep(1);
             }
-        }
+            do {
+                System.out.print("Desea ingresar un nuevo vehiculo si/no :");
+                respuesta = bf.readLine();
+                estado = Validaciones.validarRespuesta(respuesta);
+            } while (estado == false);
+        } while (respuesta.equalsIgnoreCase("si"));
 
-        //validacion de atributos
-        do {
-            System.out.print("Ingrese Marca de Vehiculo :");
-            marca = bf.readLine();
-            estado = Validaciones.validarCadena(marca);
-        } while (estado == true);
-        do {
-            System.out.print("Ingrese Modelo de Vehiculo :");
-            modelo = bf.readLine();
-            estado = Validaciones.validarCadena(modelo);
-        } while (estado == true);
-        do {
-            System.out.print("Ingrese anio de Fabricacion de Vehiculo :");
-            estado = validarNumero();
-            if (estado) {
-
-                estado = Validaciones.validarAnio(valor);
-            } else {
-                System.out.println("Anio de Fabricacion de vehiculo ingresado no Corresponde");
-            }
-
-        } while (estado == false);
-        Autos auto = new Autos(patente, marca, modelo, valor);
-        if (estado1) {
-            //si el cliente ya existe solo se agrega el vehiculo a su lista de vehiculos
-            listaCliente.get(i).agregarAuto(auto);
-        }
         menuInicial();
     }
 
@@ -290,79 +310,171 @@ public class TestMantencion {
                 respuesta = bf.readLine();
                 estado = Validaciones.validarRespuesta(respuesta);
             } while (estado == false);
-        } while (respuesta.equalsIgnoreCase(
-                "si"));
+
+        } while (respuesta.equalsIgnoreCase("si"));
 
         menuInicial();
 
     }
 
     private static void nuevaMantencion() throws Exception {
-        
-        String tipoMantencion;
-        int precio;
-        String observacion;
-    
+
         do {
-            System.out.print("Ingrese rut Cliente :");
-            rutCliente = bf.readLine();
-            estado = Validaciones.validarCadena(rutCliente);
-        } while (estado == true);
-        if (!listaCliente.isEmpty()) {//se comprueba si la lista de clientes no esta vacia
-            for (i = 0; i < listaCliente.size(); i++) {
-                if (rutCliente.equalsIgnoreCase(listaCliente.get(i).getRut())) {
-                    if (!listaCliente.get(i).getListaAutos().isEmpty()) {//se comprueba si la lista de clientes no esta vacia
-                        for (j = 0; j < listaCliente.get(i).getListaAutos().size(); j++) {
-                            System.out.printf((j + 1) + ".- %s%n", listaCliente.get(i).getListaAutos().get(j).getPatente());
-                            break;
+            String tipoMantencion;
+            int opcionPatente;
+            String observacion;
+            int opcion;
+
+            do {
+                System.out.print("Ingrese rut Cliente :");
+                rutCliente = bf.readLine();
+                estado = Validaciones.validarCadena(rutCliente);
+            } while (estado == true);
+            if (!listaCliente.isEmpty()) {//se comprueba si la lista de clientes no esta vacia
+                for (i = 0; i < listaCliente.size(); i++) {
+                    if (rutCliente.equalsIgnoreCase(listaCliente.get(i).getRut())) {
+                        if (!listaCliente.get(i).getListaAutos().isEmpty()) {//se comprueba si la lista de autos de cliente no esta vacia
+                            for (j = 0; j < listaCliente.get(i).getListaAutos().size(); j++) {
+                                System.out.printf((j + 1) + ".- %s%n", listaCliente.get(i).getListaAutos().get(j).getPatente());
+
+                            }
+                            do {
+                                System.out.print("Ingrese opcion de patente a realizar mantencion :");
+                                estado = validarNumero();
+                                if (valor > listaCliente.get(i).getListaAutos().size() || valor < 1) {
+                                    System.out.println("Valor ingresado no es valido");
+                                    estado = false;
+                                }
+                            } while (estado == false);
+
+                            opcionPatente = (valor - 1);
+                            // se eligira entre una mantencion electrica o mecanica del para el vehiculo
+                            do {
+                                System.out.println("\t\tEliga mantencion a realizar\n");
+                                System.out.println("1.- Mantencion Electrica");
+                                System.out.println("2.- Mantencion Mecanica");
+                                System.out.print("\ningrese numero de opcion a elegir :");
+                                estado = validarNumero();
+                                if (estado == false || valor > 2 || valor < 1) {
+                                    System.out.println("Valor ingresado no es valido");
+                                    estado = false;
+                                } else {
+
+                                }
+                            } while (estado == false);
+                            opcion = valor;
+                            //input con informacion de mantencion a realizar
+                            do {
+                                System.out.print("Ingrese tipo de mantencion a realizar :");
+                                tipoMantencion = bf.readLine();
+                                estado = Validaciones.validarCadena(tipoMantencion);
+                            } while (estado == true);
+
+                            do {
+                                System.out.print("Ingrese precio de mantencion :");
+                                estado = validarNumero();
+                                if (valor < 1 || estado == false) {
+                                    System.out.println("Valor ingresado no es valido");
+                                    estado = false;
+                                }
+                            } while (estado == false);
+
+                            do {
+                                System.out.print("Ingrese observacion de Mantencion :");
+                                observacion = bf.readLine();
+                                estado = Validaciones.validarCadena(observacion);
+                            } while (estado == true);
+
+                            if (opcion == 1) {
+                                Mantenciones mantencion = new MantencionElectricas(tipoMantencion, valor, observacion);
+                                listaCliente.get(i).getListaAutos().get(opcionPatente).agregarMantencion(mantencion);
+                            } else {
+                                Mantenciones mantencion = new MantencionMecanicas(tipoMantencion, valor, observacion);
+                                listaCliente.get(i).getListaAutos().get(opcionPatente).agregarMantencion(mantencion);
+                            }
+                            System.out.println("Mantencion agregada correctamente");
+                        } else {
+                            System.out.println("Lista de vehiculos de cliente esta vacia");
+                            TimeUnit.SECONDS.sleep(1);
                         }
-                        do {
-                            System.out.println("Ingrese numero de patente a realizar mantencion :");
-                            estado = validarNumero();
-                            if(valor > listaCliente.get(i).getListaAutos().size() || valor < 1){
-                                System.out.println("Valor ingresado no es valido");
-                                estado = false;
-                            }
-                        } while (estado == false );
-                        
-                        do{
-                            System.out.print("Ingrese tipo de mantencion a realizar :");
-                            tipoMantencion = bf.readLine();
-                            estado = Validaciones.validarCadena(tipoMantencion);
-                        }while(estado == true);
-                        do{
-                            System.out.print("Ingrese precio de mantencion :");
-                            estado = validarNumero();
-                            if(valor < 1 ){
-                                System.out.println("Valor ingresado no es valido");
-                                estado = false;
-                            }
-                        }while(estado == false);
-                        
-                        
-                        
-                        do{
-                            System.out.print("Ingrese observacion de Mantencion :");
-                            observacion = bf.readLine();
-                            estado = Validaciones.validarCadena(observacion);
-                        }while(estado == true);
 
                     } else {
-                        agregarVehiculoCliente();
+                        System.out.println("Rut de cliente no se encuentra en lista de clientes");
+                        TimeUnit.SECONDS.sleep(1);
                     }
-                } else {
-                    agregarCliente();
                 }
-            }
 
-        } else {
-            agregarCliente();
-        }
+            } else {
+                System.out.println("Lista de Clientes esta vacia");
+                TimeUnit.SECONDS.sleep(1);
+            }
+            do {
+                System.out.print("Desea hacer otra mantencion a vehiculo si/no :");
+                respuesta = bf.readLine();
+                estado = Validaciones.validarRespuesta(respuesta);
+            } while (estado == false);
+
+        } while (respuesta.equalsIgnoreCase("si"));
+        menuInicial();
 
     }
 
-    private static void mantencionesRealizadasVehiculo() {
+    private static void mantencionesRealizadasVehiculo() throws Exception {
+        do {
+            do {
+                System.out.println("Ingrese rut de cliente :");
+                rutCliente = bf.readLine();
+                estado = Validaciones.validarCadena(rutCliente);
 
+            } while (estado == true);
+            if (!listaCliente.isEmpty()) {//se comprueba si la lista de clientes no esta vacia
+                for (i = 0; i < listaCliente.size(); i++) {
+                    if (rutCliente.equalsIgnoreCase(listaCliente.get(i).getRut())) {
+
+                        do {
+                            System.out.print("\nIngrese Patente de Vehiculo :");
+                            patente = bf.readLine();
+                            estado = Validaciones.validarPatente(patente);
+                            if (estado == true) {
+                                System.out.println("Patente ingresada no es valida");
+                            }
+                        } while (estado == true);
+
+                        if (!listaCliente.get(i).getListaAutos().isEmpty()) {//se comprueba si la lista de clientes no esta vacia
+                            for (j = 0; j < listaCliente.get(i).getListaAutos().size(); j++) {
+                                if (listaCliente.get(i).getListaAutos().get(j).getPatente().equalsIgnoreCase(patente)) {//se comprueba que la patente ingresada no exista en lista de vehiculos del cliente
+
+                                    System.out.printf("\t\tMantenciones hechas a vehiculo patente \"%s\"%n", patente);
+                                    for (Mantenciones mantencion : listaCliente.get(i).getListaAutos().get(j).getListaMantencion()) {
+                                        System.out.printf("\n" + mantencion.toString());
+
+                                    }
+
+                                } else {
+                                    System.out.println("Vehiculo no existe");
+                                }
+
+                            }
+                        } else {
+                            System.out.println("lista de vehiculos esta vacia");
+                        }
+                    } else {
+                        System.out.println("Cliente no existe");
+                    }
+                }
+
+            } else {
+                System.out.println("lista de clientes esta vacia");
+            }
+            do {
+                System.out.println("Desea listar mantenciones de otro vehiculo si/no :");
+                respuesta = bf.readLine();
+                estado = Validaciones.validarRespuesta(respuesta);
+            } while (estado == false);
+
+        } while (respuesta.equalsIgnoreCase("si"));
+
+        menuInicial();
     }
 
     private static void informeRecaudacion() {

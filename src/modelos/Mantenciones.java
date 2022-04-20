@@ -1,6 +1,8 @@
 
 package modelos;
 
+import static java.lang.String.format;
+
 public abstract class Mantenciones {
     
     protected String tipoMantencion;
@@ -12,7 +14,7 @@ public abstract class Mantenciones {
     public abstract void crearMantencion();
 
     public String toString(){
-        return "Mantencion :"+this.tipoMantencion+", "+this.observacion+", valor :$"+this.montoServicio;
+        return format("Mantencion :%s, Detalle :%s, Valor :$%d",this.tipoMantencion, this.observacion, this.montoServicio);
     }
     
     
