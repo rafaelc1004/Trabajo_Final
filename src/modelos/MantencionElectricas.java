@@ -46,11 +46,9 @@ public class MantencionElectricas extends Mantenciones{
         this.fecha = fecha;
     }
     
-    
-
-    @Override
-    public void crearMantencion() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Fechas getFechaMantencion(){
+        return fecha;
     }
+
     
 }

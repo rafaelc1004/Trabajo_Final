@@ -58,21 +58,21 @@ public class Validaciones {
         return estado;
 
     }
-    
-    public static boolean validarCadena(String cadena){
-        if(null == cadena || cadena.isBlank()){
+
+    public static boolean validarCadena(String cadena) {
+        if (null == cadena || cadena.isBlank()) {
             System.out.println("El valor ingresado no es valido");
             estado = true;
-        }else{
+        } else {
             estado = false;
         }
         return estado;
     }
-    
-    public static boolean validarPatente(String patente){
-        if(patente.isBlank() || patente.length()>6 || patente.length()<5){
+
+    public static boolean validarPatente(String patente) {
+        if (patente.isBlank() || patente.length() != 6) {
             estado = true;
-        }else{
+        } else {
             estado = false;
         }
         return estado;

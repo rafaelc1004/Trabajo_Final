@@ -15,11 +15,6 @@ public class MantencionMecanicas extends Mantenciones{
         
     }
 
-    @Override
-    public void crearMantencion() {
-        
-    }
-
     public String getTipoMantencion() {
         return tipoMantencion;
     }
@@ -44,6 +39,7 @@ public class MantencionMecanicas extends Mantenciones{
         this.observacion = observacion;
     }
 
+    @Override
     public Fechas getFecha() {
         return fecha;
     }
@@ -52,6 +48,9 @@ public class MantencionMecanicas extends Mantenciones{
         this.fecha = fecha;
     }
     
+    public Fechas getFechaMantencion(){
+        return this.getFecha();
+    }
     
-    
+        
 }

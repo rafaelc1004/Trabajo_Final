@@ -28,6 +28,7 @@ public class TestMantencion {
     private static String respuesta;
     private static int i, j;
     private static int opcionPatente;
+    private static int totalRecaudacionDiaria;
 
     private static ArrayList<Clientes> listaCliente = new ArrayList<>();
 
@@ -53,7 +54,7 @@ public class TestMantencion {
     private static void menuInicial() throws Exception {
         System.out.println("\t\tMenu Mantenciones MyCard\n");
         System.out.println("1.- Agregar Cliente");
-        System.out.println("2.' Agregar auto a Cliente");
+        System.out.println("2.- Agregar auto a Cliente");
         System.out.println("3.- Eliminar Cliente");
         System.out.println("4.- Nueva mantencion");
         System.out.println("5.- Mantenciones realizada a Vehiculo");
@@ -404,6 +405,7 @@ public class TestMantencion {
                             System.out.println("Lista de vehiculos de cliente esta vacia");
                             TimeUnit.SECONDS.sleep(1);
                         }
+                        break;
 
                     } else {
                         System.out.println("Rut de cliente no se encuentra en lista de clientes");
@@ -456,17 +458,20 @@ public class TestMantencion {
                                         System.out.printf("\n" + mantencion.toString());
 
                                     }
+                                    break;
 
                                 } else {
-                                    System.out.println("Vehiculo no existe");
+                                    System.out.println("\nVehiculo no existe");
                                 }
 
                             }
+                         
                         } else {
                             System.out.println("lista de vehiculos esta vacia");
                         }
+                       break; 
                     } else {
-                        System.out.println("Cliente no existe");
+                        System.out.println("\nCliente no existe");
                     }
                 }
 
@@ -484,7 +489,28 @@ public class TestMantencion {
         menuInicial();
     }
 
-    private static void informeRecaudacionDia() {
+    private static void informeRecaudacionDia() throws Exception {
+        int dia, mes, year; 
+        totalRecaudacionDiaria = 0;
+        dia = LocalDate.now().getDayOfMonth();
+        mes = LocalDate.now().getMonthValue();
+        year = LocalDate.now().getYear();
+        LocalDate fecha = LocalDate.of(year, mes, dia);
+        for(int i=0; i< listaCliente.size(); i++){
+            
+            for(int j=0; j<listaCliente.get(i).getListaAutos().size() ;j++){
+                for( int x=0; x<listaCliente.get(i).getListaAutos().get(j).getListaMantencion().size(); x++){
+                    if(fecha.equals(listaCliente.get(i).getListaAutos().get(j).getListaMantencion().get(x).getFecha().getFechaMantencion())){
+                        totalRecaudacionDiaria+= listaCliente.get(i).getListaAutos().get(j).getListaMantencion().get(x).getMontoServicio();
+                    }
+                }
+            }
+            
+        }
+        System.out.printf("El total recaudado durante el dia es :%d",totalRecaudacionDiaria);
+        TimeUnit.SECONDS.sleep(1);
+        menuInicial();
+            
 
     }
 

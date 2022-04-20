@@ -5,7 +5,7 @@
 package modelos;
         
 import java.time.LocalDate;
-import java.time.Month;
+
 
 public class Fechas{
     
@@ -13,7 +13,7 @@ public class Fechas{
     
     
 
-    public Fechas(int dia, int mes, int year) {
+    public Fechas(int year, int mes, int dia) {
         this.fechaMantencion = LocalDate.of(year, mes, dia);
     }
     
